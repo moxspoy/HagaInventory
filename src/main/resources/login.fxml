@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="auth.LoginController">
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Label alignment="CENTER" layoutX="-3.0" layoutY="170.0" prefHeight="70.0" prefWidth="1200.0" style="&#10;" text="Login" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+                    <font>
+                        <Font size="48.0" />
+                    </font>
+                </Label>
+                <VBox alignment="CENTER" layoutX="323.0" layoutY="291.0" prefHeight="248.0" prefWidth="594.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                            <children>
+                                <Label prefWidth="90.0" text="Username" />
+                                <TextField fx:id="userNameField" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0">
+                            <children>
+                                <Label prefWidth="90.0" text="Password" />
+                                <PasswordField fx:id="passwordField" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="110.0" prefHeight="35.0" prefWidth="200.0">
+                            <children>
+                                <Label prefWidth="90.0" text="Role" />
+                                <ChoiceBox fx:id="roleChoiceBox" prefWidth="150.0" value="ADMINISTRATOR">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="ADMINISTRATOR" />
+                                            <String fx:value="NORMAL" />
+                                            <String fx:value="DIREKTUR" />
+                                        </FXCollections>
+                                    </items>
+                                </ChoiceBox>
+                            </children>
+                        </HBox>
+                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="244.0" text="LOGIN">
+                            <VBox.margin>
+                                <Insets top="20.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                    </padding>
+                </VBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="9.0" layoutY="261.0" prefHeight="30.0" prefWidth="1200.0" text="PT HAGA TEKNOLOGI INDUSTRI" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

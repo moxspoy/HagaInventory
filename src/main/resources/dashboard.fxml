@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.DashboardController">
+   <children>
+      <TabPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="650.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Home">
+            <content>
+              <AnchorPane maxHeight="700.0" minHeight="300.0" minWidth="0.0" prefHeight="615.0" prefWidth="1200.0">
+                     <children>
+                        <ImageView fitHeight="600.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/front_image.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D height="420.0" width="640.0" />
+                           </viewport>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Lihat Barang">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="619.0">
+                     <children>
+                        <TableView fx:id="tableProduct" layoutX="20.0" layoutY="71.0" prefHeight="512.0" prefWidth="1156.0">
+                          <columns>
+                            <TableColumn fx:id="code" prefWidth="40.0" text="Kode" />
+                            <TableColumn fx:id="name" prefWidth="200.0" text="Nama  Barang" />
+                              <TableColumn fx:id="price" prefWidth="100.0" text="Harga" />
+                              <TableColumn fx:id="merk" prefWidth="200.0" text="Merk" />
+                              <TableColumn fx:id="supplier" prefWidth="200.0" text="Pemasok" />
+                              <TableColumn fx:id="spec" prefWidth="300.0" text="Spesifikasi" />
+                              <TableColumn fx:id="stock" prefWidth="75.0" text="Stok" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Kelola Barang Masuk">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="600.0" prefWidth="1200.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" prefHeight="248.0" prefWidth="594.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Input Barang Baru" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Nama Barang" />
+                                          <TextField fx:id="newProductName" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Harga" />
+                                          <TextField fx:id="newProductPrice" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Merk" />
+                                          <TextField fx:id="newProductMerk" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="217.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Spesifikasi" />
+                                          <TextField fx:id="newProductSpec" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="252.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Pemasok" />
+                                          <TextField fx:id="newProductSupplier" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="207.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Jumlah Unit" />
+                                          <TextField fx:id="newProductNumber" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="addNewProductButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="244.0" text="Tambah Barang">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="248.0" prefWidth="594.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Ubah Data Barang" textAlignment="CENTER">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Pilih Barang" />
+                                          <ChoiceBox fx:id="changedChoiceProduct" prefWidth="150.0" value="Pilih Barang">
+                                          </ChoiceBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Nama Barang" />
+                                          <TextField fx:id="changedProductName" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Harga" />
+                                          <TextField fx:id="changedProductPrice" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Merk" />
+                                          <TextField fx:id="changedProductMerk" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="217.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Spesifikasi" />
+                                          <TextField fx:id="changedProductSpec" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="252.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Pemasok" />
+                                          <TextField fx:id="changedProductSupplier" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER" layoutX="20.0" layoutY="207.0" prefHeight="35.0" prefWidth="1118.0">
+                                       <children>
+                                          <Label prefWidth="90.0" text="Jumlah Unit" />
+                                          <TextField fx:id="changedProductNumber" />
+                                       </children>
+                                    </HBox>
+                                    <Button fx:id="changeNewProductButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="244.0" text="Ubah Barang">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children></AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Kelola Barang Keluar">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Laporan">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab text="Akses Pengguna">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1200.0" text="Version 1.0.0" textAlignment="CENTER">
+         <font>
+            <Font size="8.0" />
+         </font>
+      </Label>
+   </children>
+</VBox>
