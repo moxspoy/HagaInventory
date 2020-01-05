@@ -3,23 +3,23 @@ package dashboard;
 import database.product.ProductDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Product;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DashboardController implements Initializable {
 
     private ProductDatabase productDatabase = new ProductDatabase();
+    private List<Integer> productCodeList = new ArrayList<>();
 
     /* 1. VIEW BARANG */
     @FXML
@@ -70,9 +70,19 @@ public class DashboardController implements Initializable {
     TextField changedProductSupplier;
     @FXML
     TextField changedProductNumber;
+    @FXML
+    Button changeProductButton;
+    @FXML
+    Button deleteProductButton;
+    @FXML
+    Button refreshButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        initializeComponent();
+    }
+
+    private void initializeComponent() {
         initializeProductTable();
 
         try {
@@ -129,9 +139,59 @@ public class DashboardController implements Initializable {
         ResultSet productNames = productDatabase.getProductName();
 
         while(productNames.next()){
-            String productName = productNames.getString(1);
+            int productId = productNames.getInt(1);
+            String productName = productNames.getString(2);
+            productCodeList.add(productId);
             items.add(productName);
         }
         return items;
+    }
+
+    @FXML
+    public void addNewProduct(ActionEvent event) throws SQLException, IOException {
+        String name = newProductName.getText();
+        int price = Integer.parseInt(newProductPrice.getText());
+        String merk = newProductMerk.getText();
+        String spec = newProductSpec.getText();
+        String supplier = newProductSupplier.getText();
+        int number = Integer.parseInt(newProductNumber.getText());
+
+        Product product = new Product("code", name, price, merk, spec, supplier, number);
+        productDatabase.addProduct(product);
+        initializeComponent();
+    }
+
+    private int getSelectedProductId() {
+        int selectedIndex = changedChoiceProduct.getSelectionModel().getSelectedIndex();
+        int selectedCode = productCodeList.get(selectedIndex);
+        return selectedCode;
+    }
+
+    @FXML
+    public void changeProduct(ActionEvent event) throws SQLException, IOException {
+        int selectedCode = getSelectedProductId();
+
+        String name = changedProductName.getText();
+        int price = Integer.parseInt(changedProductPrice.getText());
+        String merk = changedProductMerk.getText();
+        String spec = changedProductSpec.getText();
+        String supplier = changedProductSupplier.getText();
+        int number = Integer.parseInt(changedProductNumber.getText());
+
+        Product product = new Product("code", name, price, merk, spec, supplier, number);
+        productDatabase.editProduct(product, selectedCode);
+        initializeComponent();
+    }
+
+    @FXML
+    public void deleteProduct(ActionEvent event) throws SQLException, IOException {
+        int selectedCode = getSelectedProductId();
+        productDatabase.deleteProduct(selectedCode);
+        initializeComponent();
+    }
+
+    @FXML
+    public void refreshData(ActionEvent event) throws SQLException, IOException {
+        initializeComponent();
     }
 }
