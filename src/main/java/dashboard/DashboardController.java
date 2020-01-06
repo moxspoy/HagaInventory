@@ -229,6 +229,7 @@ public class DashboardController implements Initializable {
         long time = date.getTime() / 1000L;
 
         productDatabase.addOutProduct(productId, price, amount, time);
+        productDatabase.decrementStock(productId, amount);
         initializeComponent();
     }
 

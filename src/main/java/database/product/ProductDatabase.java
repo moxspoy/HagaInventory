@@ -130,5 +130,25 @@ public class ProductDatabase {
         }
     }
 
+    public void decrementStock(int productId, int amount) {
+        int stock = 0;
+        try {
+            String queryGet = "SELECT stok from barang WHERE pid='" + productId + "'";
+            ResultSet rs = stmt.executeQuery(queryGet);
+            while (rs.next()){
+                stock = rs.getInt("stok");
+            }
 
+            int newStock = stock - amount;
+
+            String query = "UPDATE barang SET stok=? WHERE pid=?";
+            pstmt = (PreparedStatement) con.prepareStatement(query);
+            pstmt.setInt(1, newStock);
+            pstmt.setInt(2, productId);
+            pstmt.executeUpdate();
+            System.out.println("Berhasil mengupdate stock");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
