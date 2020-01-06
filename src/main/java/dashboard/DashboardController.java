@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DashboardController implements Initializable {
@@ -77,6 +79,18 @@ public class DashboardController implements Initializable {
     @FXML
     Button refreshButton;
 
+    /* 3. OUT PRODUCT / SALES */
+    @FXML
+    ChoiceBox outChoiceProduct;
+    @FXML
+    TextField outProductPrice;
+    @FXML
+    TextField outProductNumber;
+    @FXML
+    DatePicker outProductTime;
+    @FXML
+    Button outProductButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources){
         initializeComponent();
@@ -87,6 +101,7 @@ public class DashboardController implements Initializable {
 
         try {
             initializeChangedChoiceBox();
+            initializeOutChoiceBox();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -132,6 +147,11 @@ public class DashboardController implements Initializable {
     private void initializeChangedChoiceBox() throws SQLException {
         changedChoiceProduct.setItems(getProductNames());
         changedChoiceProduct.setValue(getProductNames().get(0));
+    }
+
+    private void initializeOutChoiceBox() throws SQLException {
+        outChoiceProduct.setItems(getProductNames());
+        outChoiceProduct.setValue(getProductNames().get(0));
     }
 
     private ObservableList<String> getProductNames() throws SQLException {
@@ -194,4 +214,22 @@ public class DashboardController implements Initializable {
     public void refreshData(ActionEvent event) throws SQLException, IOException {
         initializeComponent();
     }
+
+
+    /* 3. SALES REPORT */
+    @FXML
+    public void outProduct(ActionEvent event) throws SQLException, IOException, ParseException {
+        int selectedIndex = outChoiceProduct.getSelectionModel().getSelectedIndex();
+        int productId = productCodeList.get(selectedIndex);
+        int price = Integer.parseInt(outProductPrice.getText());
+        int amount = Integer.parseInt(outProductNumber.getText());
+        String dateTime = outProductTime.getValue().toString() + " 00:00:01";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = sdf.parse(dateTime);
+        long time = date.getTime() / 1000L;
+
+        productDatabase.addOutProduct(productId, price, amount, time);
+        initializeComponent();
+    }
+
 }

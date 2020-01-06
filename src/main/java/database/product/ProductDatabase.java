@@ -113,4 +113,22 @@ public class ProductDatabase {
             e.printStackTrace();
         }
     }
+
+    public void addOutProduct(int productId, int amount, int price, long time) {
+        try {
+            String insertQuery = "INSERT INTO barang_keluar VALUES(null,?,?,?,?)";
+            pstmt = (PreparedStatement) con.prepareStatement(insertQuery);
+            pstmt.setInt(1, productId);
+            pstmt.setInt(2, amount);
+            pstmt.setInt(3, price);
+            pstmt.setLong(4, time);
+
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Berhasil menambahkan data barang keluar");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
