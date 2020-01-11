@@ -80,40 +80,61 @@
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Nama Barang" />
-                                          <TextField fx:id="newProductName" />
+                                          <TextField fx:id="newProductName" prefHeight="40.0" prefWidth="170.0" promptText="Misal: kamera">
+                                             <HBox.margin>
+                                                <Insets />
+                                             </HBox.margin></TextField>
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Harga" />
-                                          <TextField fx:id="newProductPrice" />
+                                          <TextField fx:id="newProductPrice" prefHeight="40.0" prefWidth="170.0" text="0" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Merk" />
-                                          <TextField fx:id="newProductMerk" />
+                                          <TextField fx:id="newProductMerk" prefHeight="40.0" prefWidth="170.0" promptText="Misal: Canon" />
                                        </children>
+                                       <padding>
+                                          <Insets bottom="5.0" />
+                                       </padding>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="217.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Spesifikasi" />
-                                          <TextField fx:id="newProductSpec" />
+                                          <TextField fx:id="newProductSpec" prefHeight="40.0" prefWidth="170.0" promptText="Misal: 30MP, Autofokus" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="252.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Pemasok" />
-                                          <TextField fx:id="newProductSupplier" />
+                                          <TextField fx:id="newProductSupplier" prefHeight="40.0" prefWidth="170.0" promptText="Misal: PT Anugerah Sukses" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="207.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Jumlah Unit" />
-                                          <TextField fx:id="newProductNumber" />
+                                          <TextField fx:id="newProductNumber" prefHeight="40.0" prefWidth="170.0" text="0" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="5.0" />
+                                       </VBox.margin>
                                     </HBox>
-                                    <Button fx:id="addNewProductButton" mnemonicParsing="false" onAction="#addNewProduct" prefHeight="40.0" prefWidth="244.0" text="Tambah Barang">
+                                    <Button fx:id="addNewProductButton" mnemonicParsing="false" onAction="#addNewProduct" prefHeight="40.0" prefWidth="260.0" text="Tambah Barang">
                                        <VBox.margin>
                                           <Insets top="20.0" />
                                        </VBox.margin>
@@ -146,37 +167,37 @@
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Nama Barang" />
-                                          <TextField fx:id="changedProductName" />
+                                          <TextField fx:id="changedProductName" promptText="Misal: kamera" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Harga" />
-                                          <TextField fx:id="changedProductPrice" />
+                                          <TextField fx:id="changedProductPrice" text="0" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Merk" />
-                                          <TextField fx:id="changedProductMerk" />
+                                          <TextField fx:id="changedProductMerk" promptText="Misal: kamera" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="217.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Spesifikasi" />
-                                          <TextField fx:id="changedProductSpec" />
+                                          <TextField fx:id="changedProductSpec" promptText="Misal: 30MP, Autofokus" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="252.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Pemasok" />
-                                          <TextField fx:id="changedProductSupplier" />
+                                          <TextField fx:id="changedProductSupplier" promptText="Misal: PT Anugerah Sukses" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="207.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="90.0" text="Jumlah Unit" />
-                                          <TextField fx:id="changedProductNumber" />
+                                          <TextField fx:id="changedProductNumber" text="0" />
                                        </children>
                                     </HBox>
                                     <Button fx:id="changeProductButton" mnemonicParsing="false" onAction="#changeProduct" prefHeight="40.0" prefWidth="244.0" text="Ubah Barang">
@@ -214,34 +235,49 @@
                            <children>
                               <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="590.0" prefWidth="1204.0">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Barang Keluar" textAlignment="CENTER">
+                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Input Barang Keluar" textAlignment="CENTER">
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="20.0" />
                                        </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
                                     </Label>
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="120.0" text="Pilih Barang" />
-                                          <ChoiceBox fx:id="outChoiceProduct" prefWidth="150.0" value="Pilih Barang" />
+                                          <ChoiceBox fx:id="outChoiceProduct" prefHeight="70.0" prefWidth="200.0" value="Pilih Barang" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="120.0" text="Harga" />
-                                          <TextField fx:id="outProductPrice" />
+                                          <TextField fx:id="outProductPrice" prefHeight="70.0" prefWidth="200.0" text="0" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="120.0" text="Jumlah Penjualan" />
-                                          <TextField fx:id="outProductNumber" />
+                                          <TextField fx:id="outProductNumber" prefHeight="70.0" prefWidth="200.0" text="0" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="207.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="120.0" text="Waktu" />
-                                          <DatePicker fx:id="outProductTime" prefWidth="150.0" />
+                                          <DatePicker fx:id="outProductTime" prefHeight="70.0" prefWidth="200.0" promptText="02/02/2020" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <Button fx:id="outProductButton" mnemonicParsing="false" onAction="#outProduct" prefHeight="40.0" prefWidth="273.0" text="Submit">
                                        <VBox.margin>
@@ -297,19 +333,19 @@
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
                                     <Label prefWidth="120.0" text="Nama" />
-                                    <TextField fx:id="nameTextField" />
+                                    <TextField fx:id="nameTextField" promptText="Masukkan nama pengguna" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
                                     <Label prefWidth="120.0" text="Username" />
-                                    <TextField fx:id="userNameTextField" />
+                                    <TextField fx:id="userNameTextField" promptText="Masukkan username" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="102.0" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
                                     <Label prefWidth="120.0" text="Password" />
-                                    <TextField fx:id="passwordTextField" />
+                                    <TextField fx:id="passwordTextField" promptText="Masukkan password" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="137.0" prefHeight="35.0" prefWidth="1118.0">
@@ -355,19 +391,19 @@
                               <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
                                     <Label prefWidth="90.0" text="Nama" />
-                                    <TextField fx:id="changedUserNama" />
+                                    <TextField fx:id="changedUserNama" promptText="Masukkan nama pengguna" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
                                     <Label prefWidth="90.0" text="Username" />
-                                    <TextField fx:id="changedUserUsername" />
+                                    <TextField fx:id="changedUserUsername" promptText="Masukkan username" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
                                     <Label prefWidth="90.0" text="Pssword" />
-                                    <TextField fx:id="changedUserPassword" />
+                                    <TextField fx:id="changedUserPassword" promptText="Masukkan password" />
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="217.0" prefHeight="35.0" prefWidth="1118.0">

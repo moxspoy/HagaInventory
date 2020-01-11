@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Product;
 import model.User;
+import model.Validation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -273,8 +274,10 @@ public class DashboardController implements Initializable {
         int number = Integer.parseInt(newProductNumber.getText());
 
         Product product = new Product("code", name, price, merk, spec, supplier, number);
-        productDatabase.addProduct(product);
-        initializeComponent();
+        if(Validation.isValidInputProduct(product)) {
+            productDatabase.addProduct(product);
+            initializeComponent();
+        }
     }
 
     private int getSelectedProductId() {
@@ -295,8 +298,10 @@ public class DashboardController implements Initializable {
         int number = Integer.parseInt(changedProductNumber.getText());
 
         Product product = new Product("code", name, price, merk, spec, supplier, number);
-        productDatabase.editProduct(product, selectedCode);
-        initializeComponent();
+        if(Validation.isValidInputProduct(product)) {
+            productDatabase.editProduct(product, selectedCode);
+            initializeComponent();
+        }
     }
 
     @FXML
@@ -324,23 +329,29 @@ public class DashboardController implements Initializable {
         Date date = sdf.parse(dateTime);
         long time = date.getTime() / 1000L;
 
-        productDatabase.addOutProduct(productId, price, amount, time);
-        productDatabase.decrementStock(productId, amount);
-        initializeComponent();
+        if (Validation.isValidInputOutProduct(price, amount, time)) {
+            productDatabase.addOutProduct(productId, price, amount, time);
+            productDatabase.decrementStock(productId, amount);
+            initializeComponent();
+        }
     }
 
     /* 4. USER MANAGEMENT */
     @FXML
     public void addUser(ActionEvent event)throws SQLException, IOException, ParseException {
         String password = LoginController.encryptPassword(passwordTextField.getText());
-        productDatabase.addUser(new User(
+        User user = new User(
                 1,
                 nameTextField.getText(),
                 userNameTextField.getText(),
                 password,
                 levelChoiceBox.getValue().toString()
-        ));
-        initializeComponent();
+        );
+
+        if(Validation.isValidInputUser(user)) {
+            productDatabase.addUser(user);
+            initializeComponent();
+        }
     }
 
     @FXML
@@ -351,8 +362,11 @@ public class DashboardController implements Initializable {
         String password = LoginController.encryptPassword(changedUserPassword.getText());
         String level = levelChangedChoiceBox.getValue().toString();
         User user = new User(1, nama, userName, password, level);
-        productDatabase.editUser(user, selectedCode);
-        initializeComponent();
+
+        if(Validation.isValidInputUser(user)) {
+            productDatabase.editUser(user, selectedCode);
+            initializeComponent();
+        }
     }
 
     private int getSelectedUserId() {

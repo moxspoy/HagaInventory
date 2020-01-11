@@ -1,5 +1,6 @@
 package dashboard;
 
+import auth.Main;
 import database.product.ProductDatabase;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class Dashboard {
        Stage stage = new Stage();
        stage.setTitle("Dashboard | " + constant.Application.TITLE);
        stage.setScene(new Scene(root, constant.Application.WIDTH, constant.Application.HEIGHT));
+       stage.getIcons().add(new Image(Main.class.getResourceAsStream("/img/logo.jpg")));
        stage.show();
    }
 }
