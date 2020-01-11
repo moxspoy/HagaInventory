@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Product;
+import model.Report;
 import model.User;
 import model.Validation;
 
@@ -138,6 +139,31 @@ public class DashboardController implements Initializable {
 
     private ObservableList<User> userList;
 
+    /* Report Management */
+    @FXML
+    private DatePicker startDateCheckBox;
+    @FXML
+    private DatePicker endDateCheckBox;
+    @FXML
+    private Label totalProductLabel;
+    @FXML
+    private Label totalSoldProductLabel;
+
+    @FXML
+    private TableView<Report> tableReport;
+    @FXML
+    TableColumn<Report, Integer> numberColumnReport;
+    @FXML
+    TableColumn<Report, String> nameColumnReport;
+    @FXML
+    TableColumn<Report, String> dateColumnReport;
+    @FXML
+    TableColumn<Report, Integer> amountColumnReport;
+    @FXML
+    TableColumn<Report, Integer> revenueColumnReport;
+
+    private ObservableList<Report> reportList;
+
     @Override
     public void initialize(URL location, ResourceBundle resources){
         initializeComponent();
@@ -195,6 +221,16 @@ public class DashboardController implements Initializable {
         }
     }
 
+    private void initializeReportTable() throws SQLException, ParseException {
+        numberColumnReport.setCellValueFactory(new PropertyValueFactory<>("number"));
+        nameColumnReport.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        dateColumnReport.setCellValueFactory(new PropertyValueFactory<>("soldDate"));
+        amountColumnReport.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        revenueColumnReport.setCellValueFactory(new PropertyValueFactory<>("revenue"));
+
+        tableReport.setItems(getReportList());
+    }
+
     private ObservableList<Product> getProductList() throws SQLException {
         ResultSet allProduct = productDatabase.getAllProduct();
 
@@ -233,6 +269,40 @@ public class DashboardController implements Initializable {
         }
 
         return userList;
+    }
+
+    private ObservableList<Report> getReportList() throws ParseException, SQLException {
+
+        String startDateFromInput = startDateCheckBox.getValue().toString();
+        String endDateFromInput = endDateCheckBox.getValue().toString();
+
+        startDateFromInput = startDateFromInput  + " 00:00:01";
+        endDateFromInput = endDateFromInput  + " 00:00:01";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startDate = sdf.parse(startDateFromInput);
+        Date endDate = sdf.parse(endDateFromInput);
+        long startTime = startDate.getTime() / 1000L;
+        long endTime = endDate.getTime() / 1000L;
+
+        ResultSet allReport = productDatabase.getAllReport(startTime, endTime);
+
+        reportList = FXCollections.observableArrayList();
+
+        int i = 1;
+        while(allReport.next()){
+            Report reportFromDatabase = new Report(
+                    i,
+                    allReport.getString(2),
+                    allReport.getString(5),
+                    allReport.getInt(3),
+                    allReport.getInt(4)
+            );
+            i++;
+            reportList.add(reportFromDatabase);
+        }
+        System.out.println(reportList.size());
+
+        return reportList;
     }
 
     private void initializeChangedChoiceBox() throws SQLException {
@@ -287,7 +357,7 @@ public class DashboardController implements Initializable {
         if(!sb.toString().isEmpty()) {
             String errorMessage = "Terdapat produk dengan stok yang terbatas (kurang dari 5), yaitu " +
                     sb.toString() + "  Silahkan tambah stok produk tersebut";
-            Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.YES);
+            Alert alert = new Alert(Alert.AlertType.WARNING, errorMessage, ButtonType.YES);
             alert.setHeaderText("Kekurangan Stok");
             alert.show();
         }
@@ -410,6 +480,18 @@ public class DashboardController implements Initializable {
     public void deleteUser(ActionEvent event)throws SQLException, IOException, ParseException {
         int selectedUserId = getSelectedUserId();
         productDatabase.deleteUser(selectedUserId);
+        initializeComponent();
+    }
+
+    /* 5. REPORT MANAGEMENT */
+    @FXML
+    public void viewReport(ActionEvent event)throws SQLException, IOException, ParseException {
+        initializeReportTable();
+        initializeComponent();
+    }
+
+    @FXML
+    public void downloadReport(ActionEvent event)throws SQLException, IOException, ParseException {
         initializeComponent();
     }
 

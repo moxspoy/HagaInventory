@@ -8,9 +8,7 @@ import model.Validation;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProductDatabase {
     Connection con = null;
@@ -80,7 +78,7 @@ public class ProductDatabase {
     public ResultSet getProductName() {
         ResultSet resultSet = null;
         try {
-            String query = "SELECT pid, nama FROM barang ORDER BY pid";
+            String query = "SELECT pid, merk FROM barang ORDER BY pid";
             resultSet = stmt.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,19 +118,36 @@ public class ProductDatabase {
     }
 
     public void addOutProduct(int productId, int amount, int price, long time) {
+        int initialPrice = getPriceById(productId);
+
         try {
-            String insertQuery = "INSERT INTO barang_keluar VALUES(null,?,?,?,?)";
+            String insertQuery = "INSERT INTO barang_keluar VALUES(null,?,?,?,?,?)";
             pstmt = (PreparedStatement) con.prepareStatement(insertQuery);
             pstmt.setInt(1, productId);
-            pstmt.setInt(2, amount);
-            pstmt.setInt(3, price);
+            pstmt.setInt(2, price);
+            pstmt.setInt(3, amount);
             pstmt.setLong(4, time);
+            pstmt.setLong(5, initialPrice);
 
             pstmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Berhasil menambahkan data barang keluar");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getPriceById(int productId){
+        int initialPrice = 0;
+        try {
+            String queryGet = "SELECT harga from barang WHERE pid='" + productId + "'";
+            ResultSet rs = stmt.executeQuery(queryGet);
+            while (rs.next()){
+                initialPrice = rs.getInt("harga");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return initialPrice;
     }
 
     public void decrementStock(int productId, int amount) {
@@ -278,6 +293,20 @@ public class ProductDatabase {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /* Report Database Operation */
+    public ResultSet getAllReport(long startTime, long endTime) {
+        ResultSet resultSet = null;
+        try {
+            stmt = con.createStatement();
+            String query = "SELECT * FROM barang_keluar where time between " + startTime + " and " + endTime + " order by id";
+            System.out.println(query);
+            resultSet = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
     }
 
 }
