@@ -2,6 +2,7 @@ package database.product;
 
 import database.ConnectionFactory;
 import model.Product;
+import model.User;
 
 import javax.swing.*;
 import java.sql.*;
@@ -99,7 +100,6 @@ public class ProductDatabase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void deleteProduct(int value){
@@ -151,4 +151,73 @@ public class ProductDatabase {
             e.printStackTrace();
         }
     }
+
+
+    public ResultSet getAllUser() {
+        ResultSet resultSet = null;
+        try {
+            stmt = con.createStatement();
+            String query = "SELECT * FROM pengguna";
+            resultSet = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public void addUser(User user) {
+        try {
+            String insertQuery = "INSERT INTO pengguna VALUES(null,?,?,?,?)";
+            pstmt = (PreparedStatement) con.prepareStatement(insertQuery);
+            pstmt.setString(1, user.getNama());
+            pstmt.setString(2, user.getUserName());
+            pstmt.setString(3, user.getPassword());
+            pstmt.setString(4, user.getLevel());
+
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Berhasil menambahkan data pengguna baru");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet getUserNames() {
+        ResultSet resultSet = null;
+        try {
+            String query = "SELECT id, nama FROM pengguna ORDER BY id";
+            resultSet = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public void editUser(User user, int userId) {
+        try {
+            String query = "UPDATE pengguna SET nama=?,username=?,password=?,level=? WHERE id=?";
+            pstmt = (PreparedStatement) con.prepareStatement(query);
+            pstmt.setString(1, user.getNama());
+            pstmt.setString(2, user.getUserName());
+            pstmt.setString(3, user.getPassword());
+            pstmt.setString(4, user.getLevel());
+            pstmt.setInt(5, userId);
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Berhasil memperbarui data pengguna");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(int id){
+        try{
+            String query = "delete from pengguna where id=?";
+            pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Berhasil menghapus pengguna");
+        }catch(SQLException  e){
+            e.printStackTrace();
+        }
+    }
+
 }

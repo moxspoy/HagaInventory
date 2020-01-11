@@ -70,7 +70,7 @@ public class LoginController {
         stage.hide();
     }
 
-    private String encryptPassword(String input){
+    public static String encryptPassword(String input){
         String encPass=null;
         if(input == null) return null;
 

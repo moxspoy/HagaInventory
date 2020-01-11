@@ -1,5 +1,6 @@
 package dashboard;
 
+import auth.LoginController;
 import database.product.ProductDatabase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.Product;
+import model.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +24,7 @@ public class DashboardController implements Initializable {
 
     private ProductDatabase productDatabase = new ProductDatabase();
     private List<Integer> productCodeList = new ArrayList<>();
+    private List<Integer> userIdList = new ArrayList<>();
 
     /* 1. VIEW BARANG */
     @FXML
@@ -91,6 +94,46 @@ public class DashboardController implements Initializable {
     @FXML
     Button outProductButton;
 
+    /* 4. USER MANAGEMENT */
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField userNameTextField;
+    @FXML
+    private TextField passwordTextField;
+    @FXML
+    private ChoiceBox levelChoiceBox;
+
+    @FXML
+    private ChoiceBox changedChoiceUser;
+    @FXML
+    private TextField changedUserNama;
+    @FXML
+    private TextField changedUserUsername;
+    @FXML
+    private TextField changedUserPassword;
+    @FXML
+    private ChoiceBox levelChangedChoiceBox;
+    @FXML
+    private Button changeUserButton;
+    @FXML
+    private Button deleteUserButton;
+
+    @FXML
+    private TableView<User> tableUser;
+    @FXML
+    TableColumn<User, Integer> idUser;
+    @FXML
+    TableColumn<User, String> nama;
+    @FXML
+    TableColumn<User, String> userName;
+    @FXML
+    TableColumn<User, String> password;
+    @FXML
+    TableColumn<User, String> level;
+
+    private ObservableList<User> userList;
+
     @Override
     public void initialize(URL location, ResourceBundle resources){
         initializeComponent();
@@ -98,10 +141,12 @@ public class DashboardController implements Initializable {
 
     private void initializeComponent() {
         initializeProductTable();
+        initializeUserTable();
 
         try {
             initializeChangedChoiceBox();
             initializeOutChoiceBox();
+            initializeUserChoiceBox();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -117,13 +162,27 @@ public class DashboardController implements Initializable {
         stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         try {
-            tableProduct.setItems(getUserList());
+            tableProduct.setItems(getProductList());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private ObservableList<Product> getUserList() throws SQLException {
+    private void initializeUserTable() {
+        idUser.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nama.setCellValueFactory(new PropertyValueFactory<>("nama"));
+        userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        password.setCellValueFactory(new PropertyValueFactory<>("password"));
+        level.setCellValueFactory(new PropertyValueFactory<>("level"));
+
+        try {
+            tableUser.setItems(getUserList());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ObservableList<Product> getProductList() throws SQLException {
         ResultSet allProduct = productDatabase.getAllProduct();
 
         list = FXCollections.observableArrayList();
@@ -144,6 +203,25 @@ public class DashboardController implements Initializable {
         return list;
     }
 
+    private ObservableList<User> getUserList() throws SQLException {
+        ResultSet allUser = productDatabase.getAllUser();
+
+        userList = FXCollections.observableArrayList();
+
+        while(allUser.next()){
+            User userFromDatabase = new User(
+                    allUser.getInt(1),
+                    allUser.getString(2),
+                    allUser.getString(3),
+                    allUser.getString(4),
+                    allUser.getString(5)
+            );
+            userList.add(userFromDatabase);
+        }
+
+        return userList;
+    }
+
     private void initializeChangedChoiceBox() throws SQLException {
         changedChoiceProduct.setItems(getProductNames());
         changedChoiceProduct.setValue(getProductNames().get(0));
@@ -152,6 +230,11 @@ public class DashboardController implements Initializable {
     private void initializeOutChoiceBox() throws SQLException {
         outChoiceProduct.setItems(getProductNames());
         outChoiceProduct.setValue(getProductNames().get(0));
+    }
+
+    private void initializeUserChoiceBox() throws SQLException {
+        changedChoiceUser.setItems(getUserNames());
+        changedChoiceUser.setValue(getUserNames().get(0));
     }
 
     private ObservableList<String> getProductNames() throws SQLException {
@@ -163,6 +246,19 @@ public class DashboardController implements Initializable {
             String productName = productNames.getString(2);
             productCodeList.add(productId);
             items.add(productName);
+        }
+        return items;
+    }
+
+    private ObservableList<String> getUserNames() throws SQLException {
+        ObservableList<String> items = FXCollections.observableArrayList();
+        ResultSet userNames = productDatabase.getUserNames();
+
+        while(userNames.next()){
+            int userId = userNames.getInt(1);
+            String nama = userNames.getString(2);
+            userIdList.add(userId);
+            items.add(nama);
         }
         return items;
     }
@@ -230,6 +326,45 @@ public class DashboardController implements Initializable {
 
         productDatabase.addOutProduct(productId, price, amount, time);
         productDatabase.decrementStock(productId, amount);
+        initializeComponent();
+    }
+
+    /* 4. USER MANAGEMENT */
+    @FXML
+    public void addUser(ActionEvent event)throws SQLException, IOException, ParseException {
+        String password = LoginController.encryptPassword(passwordTextField.getText());
+        productDatabase.addUser(new User(
+                1,
+                nameTextField.getText(),
+                userNameTextField.getText(),
+                password,
+                levelChoiceBox.getValue().toString()
+        ));
+        initializeComponent();
+    }
+
+    @FXML
+    public void changeUser(ActionEvent event)throws SQLException, IOException, ParseException {
+        int selectedCode = getSelectedUserId();
+        String nama = changedUserNama.getText();
+        String userName = changedUserUsername.getText();
+        String password = LoginController.encryptPassword(changedUserPassword.getText());
+        String level = levelChangedChoiceBox.getValue().toString();
+        User user = new User(1, nama, userName, password, level);
+        productDatabase.editUser(user, selectedCode);
+        initializeComponent();
+    }
+
+    private int getSelectedUserId() {
+        int selectedIndex = changedChoiceUser.getSelectionModel().getSelectedIndex();
+        int selectedId = userIdList.get(selectedIndex);
+        return selectedId;
+    }
+
+    @FXML
+    public void deleteUser(ActionEvent event)throws SQLException, IOException, ParseException {
+        int selectedUserId = getSelectedUserId();
+        productDatabase.deleteUser(selectedUserId);
         initializeComponent();
     }
 

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
@@ -42,6 +44,11 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="171.0" prefWidth="619.0">
                      <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="53.0" prefWidth="1200.0" text="DATA BARANG PT HAGA TEKNOLOGI INDUSTRI" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
                         <TableView fx:id="tableProduct" layoutX="20.0" layoutY="71.0" prefHeight="512.0" prefWidth="1156.0">
                           <columns>
                             <TableColumn fx:id="code" prefWidth="50.0" text="Kode" />
@@ -205,7 +212,7 @@
                      <children>
                         <HBox prefHeight="600.0" prefWidth="1200.0">
                            <children>
-                              <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="248.0" prefWidth="594.0">
+                              <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="590.0" prefWidth="1204.0">
                                  <children>
                                     <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Barang Keluar" textAlignment="CENTER">
                                        <VBox.margin>
@@ -264,7 +271,134 @@
             </Tab>
             <Tab text="Akses Pengguna">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="53.0" prefWidth="1200.0" text="MANAJEMEN PENGGUNA" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="tableUser" layoutY="57.0" prefHeight="455.0" prefWidth="773.0">
+                           <columns>
+                              <TableColumn fx:id="idUser" prefWidth="103.0" text="ID" />
+                              <TableColumn fx:id="nama" prefWidth="147.0" text="Nama " />
+                              <TableColumn fx:id="userName" prefWidth="100.0" text="Username" />
+                              <TableColumn fx:id="password" prefWidth="200.0" text="Password" />
+                              <TableColumn fx:id="level" prefWidth="200.0" text="Level" />
+                           </columns>
+                        </TableView>
+                        <VBox alignment="TOP_CENTER" layoutX="846.0" layoutY="-8.0" prefHeight="248.0" prefWidth="293.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Tambah Pengguna" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="120.0" text="Nama" />
+                                    <TextField fx:id="nameTextField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="120.0" text="Username" />
+                                    <TextField fx:id="userNameTextField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="20.0" layoutY="102.0" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="120.0" text="Password" />
+                                    <TextField fx:id="passwordTextField" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="20.0" layoutY="137.0" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="120.0" text="Level" />
+                                    <ChoiceBox fx:id="levelChoiceBox" layoutX="182.0" layoutY="12.0" prefWidth="150.0" value="ADMINISTRATOR">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="ADMINISTRATOR" />
+                                             <String fx:value="NORMAL" />
+                                             <String fx:value="DIREKTUR" />
+                                          </FXCollections>
+                                       </items>
+                                    </ChoiceBox>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="addUser" mnemonicParsing="false" onAction="#addUser" prefHeight="40.0" prefWidth="273.0" text="Tambah">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="20.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" layoutX="765.0" layoutY="254.0" prefHeight="272.0" prefWidth="436.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="301.0" text="Ubah Data Pengguna" textAlignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="90.0" text="Pengguna" />
+                                    <ChoiceBox fx:id="changedChoiceUser" prefWidth="150.0" value="Pilih Barang" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="90.0" text="Nama" />
+                                    <TextField fx:id="changedUserNama" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="20.0" layoutY="67.0" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="90.0" text="Username" />
+                                    <TextField fx:id="changedUserUsername" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="90.0" text="Pssword" />
+                                    <TextField fx:id="changedUserPassword" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" layoutX="20.0" layoutY="217.0" prefHeight="35.0" prefWidth="1118.0">
+                                 <children>
+                                    <Label prefWidth="90.0" text="Level" />
+                                    <ChoiceBox fx:id="levelChangedChoiceBox" prefWidth="150.0" value="ADMINISTRATOR">
+                                       <items>
+                                          <FXCollections fx:factory="observableArrayList">
+                                             <String fx:value="ADMINISTRATOR" />
+                                             <String fx:value="NORMAL" />
+                                             <String fx:value="DIREKTUR" />
+                                          </FXCollections>
+                                       </items>
+                                    </ChoiceBox>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="changeUserButton" mnemonicParsing="false" onAction="#changeUser" prefHeight="40.0" prefWidth="244.0" text="Ubah">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="20.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button fx:id="deleteUserButton" layoutX="185.0" layoutY="332.0" mnemonicParsing="false" onAction="#deleteUser" prefHeight="40.0" prefWidth="244.0" text="Hapus" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                     </children></AnchorPane>
                </content>
             </Tab>
         </tabs>
