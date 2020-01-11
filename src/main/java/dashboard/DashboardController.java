@@ -144,7 +144,6 @@ public class DashboardController implements Initializable {
     }
 
     private void initializeComponent() {
-        initializeDefaultValue();
         initializeProductTable();
         initializeUserTable();
 
@@ -152,6 +151,7 @@ public class DashboardController implements Initializable {
             initializeChangedChoiceBox();
             initializeOutChoiceBox();
             initializeUserChoiceBox();
+            initializeDefaultValue();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -161,6 +161,8 @@ public class DashboardController implements Initializable {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate now = LocalDate.now();
         outProductTime.setValue(now);
+
+        checkLimitedStock();
     }
 
     private void initializeProductTable() {
@@ -272,6 +274,23 @@ public class DashboardController implements Initializable {
             items.add(nama);
         }
         return items;
+    }
+
+    public void checkLimitedStock() {
+        List<Product> productList = productDatabase.getAllStock();
+        StringBuilder sb = new StringBuilder();
+        for(Product product : productList) {
+            if(product.getStock() < Validation.MINIMUM_STOCK) {
+                sb.append(product.getName() + " dengan code " + product.getCode() + ", ");
+            }
+        }
+        if(!sb.toString().isEmpty()) {
+            String errorMessage = "Terdapat produk dengan stok yang terbatas (kurang dari 5), yaitu " +
+                    sb.toString() + "  Silahkan tambah stok produk tersebut";
+            Alert alert = new Alert(Alert.AlertType.ERROR, errorMessage, ButtonType.YES);
+            alert.setHeaderText("Kekurangan Stok");
+            alert.show();
+        }
     }
 
     @FXML

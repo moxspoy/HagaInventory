@@ -7,6 +7,10 @@ import model.Validation;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProductDatabase {
     Connection con = null;
@@ -153,7 +157,7 @@ public class ProductDatabase {
         }
     }
 
-    public int getStock(int productId) {
+    public int getStockById(int productId) {
         String query = "SELECT stok FROM barang WHERE pid='" + productId +"'";
         ResultSet rs = null;
         int stock = 0;
@@ -166,6 +170,31 @@ public class ProductDatabase {
             e.printStackTrace();
         }
         return stock;
+    }
+
+    public List<Product> getAllStock() {
+        List<Product> productList = new ArrayList<>();
+        String query = "SELECT * FROM barang order by pid";
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                String code = rs.getString(2);
+                String nama = rs.getString(3);
+                int price = rs.getInt(4);
+                String merk = rs.getString(5);
+                String spec = rs.getString(6);
+                String supplier = rs.getString(7);
+                int stok = rs.getInt(8);
+                long time = rs.getLong(9);
+
+                Product product = new Product(code, nama, price, merk, spec, supplier, stok);
+                productList.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productList;
     }
 
     public ResultSet getAllUser() {

@@ -37,7 +37,7 @@ public class Validation {
 
     public static boolean isValidInputOutProduct(int productId, int price, int amount, String date) {
         ProductDatabase productDatabase = new ProductDatabase();
-        boolean isLimitedStock = productDatabase.getStock(productId) < MINIMUM_STOCK;
+        boolean isLimitedStock = productDatabase.getStockById( productId) < MINIMUM_STOCK;
         if(price < MINIMUM_INPUT_VALUE || amount < MINIMUM_INPUT_VALUE || date.isEmpty()) {
             showEmptyAlertDialog();
             return false;
