@@ -19,6 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class DashboardController implements Initializable {
@@ -141,6 +144,7 @@ public class DashboardController implements Initializable {
     }
 
     private void initializeComponent() {
+        initializeDefaultValue();
         initializeProductTable();
         initializeUserTable();
 
@@ -151,6 +155,12 @@ public class DashboardController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initializeDefaultValue() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate now = LocalDate.now();
+        outProductTime.setValue(now);
     }
 
     private void initializeProductTable() {
@@ -324,12 +334,14 @@ public class DashboardController implements Initializable {
         int productId = productCodeList.get(selectedIndex);
         int price = Integer.parseInt(outProductPrice.getText());
         int amount = Integer.parseInt(outProductNumber.getText());
-        String dateTime = outProductTime.getValue().toString() + " 00:00:01";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = sdf.parse(dateTime);
-        long time = date.getTime() / 1000L;
+        String dateFromInput = outProductTime.getValue().toString();
 
-        if (Validation.isValidInputOutProduct(price, amount, time)) {
+        if (Validation.isValidInputOutProduct(productId, price, amount, dateFromInput)) {
+            String dateTime = dateFromInput  + " 00:00:01";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = sdf.parse(dateTime);
+            long time = date.getTime() / 1000L;
+
             productDatabase.addOutProduct(productId, price, amount, time);
             productDatabase.decrementStock(productId, amount);
             initializeComponent();

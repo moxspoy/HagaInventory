@@ -273,7 +273,8 @@
                                     <HBox alignment="CENTER" layoutX="20.0" layoutY="207.0" prefHeight="35.0" prefWidth="1118.0">
                                        <children>
                                           <Label prefWidth="120.0" text="Waktu" />
-                                          <DatePicker fx:id="outProductTime" prefHeight="70.0" prefWidth="200.0" promptText="02/02/2020" />
+                                          <DatePicker fx:id="outProductTime" prefHeight="70.0" prefWidth="200.0"
+                                                      promptText="02/02/2020"/>
                                        </children>
                                        <VBox.margin>
                                           <Insets bottom="10.0" />
@@ -402,7 +403,7 @@
                               </HBox>
                               <HBox alignment="CENTER" layoutX="20.0" layoutY="182.0" prefHeight="35.0" prefWidth="1118.0">
                                  <children>
-                                    <Label prefWidth="90.0" text="Pssword" />
+                                    <Label prefWidth="90.0" text="Password" />
                                     <TextField fx:id="changedUserPassword" promptText="Masukkan password" />
                                  </children>
                               </HBox>

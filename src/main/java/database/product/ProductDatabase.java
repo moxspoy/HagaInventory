@@ -3,6 +3,7 @@ package database.product;
 import database.ConnectionFactory;
 import model.Product;
 import model.User;
+import model.Validation;
 
 import javax.swing.*;
 import java.sql.*;
@@ -152,12 +153,26 @@ public class ProductDatabase {
         }
     }
 
+    public int getStock(int productId) {
+        String query = "SELECT stok FROM barang WHERE pid='" + productId +"'";
+        ResultSet rs = null;
+        int stock = 0;
+        try {
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                stock = rs.getInt("stok");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stock;
+    }
 
     public ResultSet getAllUser() {
         ResultSet resultSet = null;
         try {
             stmt = con.createStatement();
-            String query = "SELECT * FROM pengguna";
+            String query = "SELECT * FROM pengguna order by id";
             resultSet = stmt.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -174,8 +189,12 @@ public class ProductDatabase {
             pstmt.setString(3, user.getPassword());
             pstmt.setString(4, user.getLevel());
 
-            pstmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Berhasil menambahkan data pengguna baru");
+            if(!isUsernameExist(user.getUserName(), user.getLevel())){
+                pstmt.executeUpdate();
+                Validation.showDialog( "Berhasil menambahkan data pengguna baru");
+            } else {
+                Validation.showDialog( "Username dengan level sudah digunakan oleh akun lain");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -202,7 +221,7 @@ public class ProductDatabase {
             pstmt.setString(4, user.getLevel());
             pstmt.setInt(5, userId);
             pstmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Berhasil memperbarui data pengguna");
+            Validation.showDialog( "Berhasil memmperbarui data pengguna baru");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -217,6 +236,18 @@ public class ProductDatabase {
             JOptionPane.showMessageDialog(null, "Berhasil menghapus pengguna");
         }catch(SQLException  e){
             e.printStackTrace();
+        }
+    }
+
+    public boolean isUsernameExist(String username, String level) {
+        String query = "SELECT * FROM pengguna WHERE username='" + username +"' AND  level='" + level +"'";
+        ResultSet rs = null;
+        try {
+            rs = stmt.executeQuery(query);
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
