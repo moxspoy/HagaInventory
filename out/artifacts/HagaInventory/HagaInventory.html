@@ -1,0 +1,43 @@
+<html><head>
+  <SCRIPT src="http://java.com/js/dtjava.js"></SCRIPT>
+<script>
+    function launchApplication(jnlpfile) {
+        dtjava.launch(            {
+                url : 'HagaInventory.jnlp'
+            },
+            {
+                javafx : '8.0+'
+            },
+            {}
+        );
+        return false;
+    }
+</script>
+
+<script>
+    function javafxEmbedHagaInventory_id() {
+        dtjava.embed(
+            {
+                id : 'HagaInventory_id',
+                url : 'HagaInventory.jnlp',
+                placeholder : 'javafx-app-placeholder',
+                width : '1200',
+                height : '700'
+            },
+            {
+                javafx : '8.0+'
+            },
+            {}
+        );
+    }
+    <!-- Embed FX application into web page once page is loaded -->
+    dtjava.addOnloadCallback(javafxEmbedHagaInventory_id);
+</script>
+
+</head><body>
+<h2>Test page for <b>HagaInventory</b></h2>
+  <b>Webstart:</b> <a href='HagaInventory.jnlp' onclick="return launchApplication('HagaInventory.jnlp');">click to launch this app as webstart</a><br><hr><br>
+
+  <!-- Applet will be inserted here -->
+  <div id='javafx-app-placeholder'></div>
+</body></html>
