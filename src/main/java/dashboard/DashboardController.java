@@ -1,14 +1,19 @@
 package dashboard;
 
 import auth.LoginController;
+import auth.Main;
 import database.product.ProductDatabase;
+import helper.Helper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.Product;
 import model.Report;
 import model.User;
@@ -21,7 +26,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -30,6 +34,13 @@ public class DashboardController implements Initializable {
     private ProductDatabase productDatabase = new ProductDatabase();
     private List<Integer> productCodeList = new ArrayList<>();
     private List<Integer> userIdList = new ArrayList<>();
+
+    @FXML
+    private Tab reportTab;
+    @FXML
+    private Tab userAccessTab;
+    @FXML
+    private Tab logoutTab;
 
     /* 1. VIEW BARANG */
     @FXML
@@ -121,8 +132,6 @@ public class DashboardController implements Initializable {
     private ChoiceBox levelChangedChoiceBox;
     @FXML
     private Button changeUserButton;
-    @FXML
-    private Button deleteUserButton;
 
     @FXML
     private TableView<User> tableUser;
@@ -163,6 +172,8 @@ public class DashboardController implements Initializable {
     TableColumn<Report, Integer> revenueColumnReport;
 
     private ObservableList<Report> reportList;
+    private String availableProductTotal;
+    private String soldProductTotal;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -170,6 +181,8 @@ public class DashboardController implements Initializable {
     }
 
     private void initializeComponent() {
+        initializeUserAccess();
+        clearInputValue();
         initializeProductTable();
         initializeUserTable();
 
@@ -181,6 +194,45 @@ public class DashboardController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initializeUserAccess() {
+        User currentUser = Helper.getCurrentUser();
+        boolean isAdmin = currentUser.getLevel().equalsIgnoreCase(constant.User.LEVEL_ADMINISTRATOR);
+        boolean isDirektur = currentUser.getLevel().equalsIgnoreCase(constant.User.LEVEL_DIREKTUR);
+        boolean isTopLevelAccess = isAdmin || isDirektur;
+        if(!isTopLevelAccess) {
+            reportTab.setDisable(true);
+            userAccessTab.setDisable(true);
+        }
+    }
+
+    private void clearInputValue() {
+        newProductName.setText("");
+        newProductPrice.setText("0");
+        newProductMerk.setText("");
+        newProductSpec.setText("");
+        newProductSupplier.setText("");
+        newProductNumber.setText("0");
+
+        changedProductName.setText("");
+        changedProductPrice.setText("0");
+        changedProductMerk.setText("");
+        changedProductSpec.setText("");
+        changedProductSupplier.setText("");
+        changedProductNumber.setText("0");
+
+        outProductPrice.setText("0");
+        outProductNumber.setText("0");
+        outProductTime.setValue(LocalDate.now());
+
+        nameTextField.setText("");
+        userNameTextField.setText("");
+        passwordTextField.setText("");
+
+        changedUserNama.setText("");
+        changedUserUsername.setText("");
+        changedUserPassword.setText("");
     }
 
     private void initializeDefaultValue() {
@@ -229,6 +281,12 @@ public class DashboardController implements Initializable {
         revenueColumnReport.setCellValueFactory(new PropertyValueFactory<>("revenue"));
 
         tableReport.setItems(getReportList());
+
+        totalSoldProductLabel.setText(soldProductTotal);
+
+        int availableStock = productDatabase.getAvailableStock();
+        availableProductTotal = String.valueOf(availableStock) + " produk";
+        totalProductLabel.setText(availableProductTotal);
     }
 
     private ObservableList<Product> getProductList() throws SQLException {
@@ -281,23 +339,36 @@ public class DashboardController implements Initializable {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = sdf.parse(startDateFromInput);
         Date endDate = sdf.parse(endDateFromInput);
-        long startTime = startDate.getTime() / 1000L;
-        long endTime = endDate.getTime() / 1000L;
+        long startTime = startDate.getTime();
+        long endTime = endDate.getTime();
 
         ResultSet allReport = productDatabase.getAllReport(startTime, endTime);
 
         reportList = FXCollections.observableArrayList();
 
+        int soldProductCount = 0;
         int i = 1;
         while(allReport.next()){
+            String productName = allReport.getString(1);
+            long time = allReport.getLong(2);
+            String date = Helper.getDateFromTime(time);
+            int price = allReport.getInt(4);
+            int initialPrice = allReport.getInt(5);
+            int margin = price - initialPrice;
+            String revenue = Helper.formatCurrency(margin);
+            int amount = allReport.getInt(3);
+
             Report reportFromDatabase = new Report(
                     i,
-                    allReport.getString(2),
-                    allReport.getString(5),
-                    allReport.getInt(3),
-                    allReport.getInt(4)
+                    productName,
+                    date,
+                    amount,
+                    revenue
             );
+
             i++;
+            soldProductCount = soldProductCount + amount;
+            soldProductTotal = String.valueOf(soldProductCount) + " produk";
             reportList.add(reportFromDatabase);
         }
         System.out.println(reportList.size());
@@ -307,17 +378,23 @@ public class DashboardController implements Initializable {
 
     private void initializeChangedChoiceBox() throws SQLException {
         changedChoiceProduct.setItems(getProductNames());
-        changedChoiceProduct.setValue(getProductNames().get(0));
+        if(getProductNames().size() > 0) {
+            changedChoiceProduct.setValue(getProductNames().get(0));
+        }
     }
 
     private void initializeOutChoiceBox() throws SQLException {
         outChoiceProduct.setItems(getProductNames());
-        outChoiceProduct.setValue(getProductNames().get(0));
+        if(getProductNames().size() > 0) {
+            outChoiceProduct.setValue(getProductNames().get(0));
+        }
     }
 
     private void initializeUserChoiceBox() throws SQLException {
         changedChoiceUser.setItems(getUserNames());
-        changedChoiceUser.setValue(getUserNames().get(0));
+        if(getUserNames().size() > 0) {
+            changedChoiceUser.setValue(getUserNames().get(0));
+        }
     }
 
     private ObservableList<String> getProductNames() throws SQLException {
@@ -326,7 +403,8 @@ public class DashboardController implements Initializable {
 
         while(productNames.next()){
             int productId = productNames.getInt(1);
-            String productName = productNames.getString(2);
+            String productName = productNames.getString(2) + " " +
+                    productNames.getString(3);
             productCodeList.add(productId);
             items.add(productName);
         }
@@ -406,6 +484,7 @@ public class DashboardController implements Initializable {
     @FXML
     public void deleteProduct(ActionEvent event) throws SQLException, IOException {
         int selectedCode = getSelectedProductId();
+        System.out.println(selectedCode);
         productDatabase.deleteProduct(selectedCode);
         initializeComponent();
     }
@@ -429,9 +508,10 @@ public class DashboardController implements Initializable {
             String dateTime = dateFromInput  + " 00:00:01";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = sdf.parse(dateTime);
-            long time = date.getTime() / 1000L;
+            long time = date.getTime();
 
             productDatabase.addOutProduct(productId, price, amount, time);
+            System.out.println(productId);
             productDatabase.decrementStock(productId, amount);
             initializeComponent();
         }
@@ -483,6 +563,16 @@ public class DashboardController implements Initializable {
         initializeComponent();
     }
 
+    @FXML
+    public void logout(Event event) throws Exception {
+        Main main = new Main();
+        main.start(new Stage());
+
+        Window window = refreshButton.getScene().getWindow();
+        Stage stage = (Stage) window;
+        stage.hide();
+    }
+
     /* 5. REPORT MANAGEMENT */
     @FXML
     public void viewReport(ActionEvent event)throws SQLException, IOException, ParseException {
@@ -490,9 +580,5 @@ public class DashboardController implements Initializable {
         initializeComponent();
     }
 
-    @FXML
-    public void downloadReport(ActionEvent event)throws SQLException, IOException, ParseException {
-        initializeComponent();
-    }
 
 }

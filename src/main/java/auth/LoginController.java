@@ -2,6 +2,7 @@ package auth;
 
 import dashboard.Dashboard;
 import database.ConnectionFactory;
+import helper.Helper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,11 +11,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import model.User;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class LoginController {
     @FXML
@@ -33,14 +38,14 @@ public class LoginController {
     public void login(ActionEvent event) throws SQLException, IOException {
         Window owner = loginButton.getScene().getWindow();
 
-        if (userNameField.getText().isEmpty() || passwordField.getText().length() < 6) {
+        if (userNameField.getText().isEmpty() || userNameField.getText().length() < 5) {
             showAlert(Alert.AlertType.ERROR, owner, "Username salah!",
-                    "Silahkan masukkan username anda");
+                    "Silahkan masukkan username anda, panjang username minimal 5 karakter");
             return;
         }
-        if (passwordField.getText().isEmpty() || passwordField.getText().length() < 6) {
+        if (passwordField.getText().isEmpty() || passwordField.getText().length() < 5) {
             showAlert(Alert.AlertType.ERROR, owner, "Password kosong!",
-                    "Silahkan masukkan password anda");
+                    "Silahkan masukkan password anda, panjang password minimal 5 karakter");
             return;
         }
 
@@ -51,10 +56,12 @@ public class LoginController {
 
         ConnectionFactory db = new ConnectionFactory();
         boolean flag = db.login(email, encryptedPassword, role);
+        User currentUser = db.getCurrentUser();
 
         if (!flag) {
             infoBox("Username atau password salah, silahkan coba lagi", null, "Failed");
         } else {
+            Helper.saveCurrentUser(currentUser);
             openDashboardWindow(owner);
         }
     }

@@ -4,6 +4,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -13,6 +14,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -300,7 +302,7 @@
                      </children></AnchorPane>
                </content>
             </Tab>
-            <Tab text="Laporan">
+            <Tab fx:id="reportTab" text="Laporan">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -337,11 +339,6 @@
                                     <Button fx:id="reportButton" mnemonicParsing="false" onAction="#viewReport" prefHeight="35.0" prefWidth="257.0" text="Lihat Laporan">
                                        <VBox.margin>
                                           <Insets left="20.0" />
-                                       </VBox.margin>
-                                    </Button>
-                                    <Button fx:id="downloadReportButton" layoutX="30.0" layoutY="181.0" mnemonicParsing="false" onAction="#downloadReport" prefHeight="35.0" prefWidth="257.0" text="Unduh Laporan">
-                                       <VBox.margin>
-                                          <Insets left="20.0" top="10.0" />
                                        </VBox.margin>
                                     </Button>
                                  </children>
@@ -415,7 +412,7 @@
                      </children></AnchorPane>
                </content>
             </Tab>
-            <Tab text="Akses Pengguna">
+            <Tab fx:id="userAccessTab" text="Akses Pengguna">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -547,8 +544,28 @@
                      </children></AnchorPane>
                </content>
             </Tab>
+            <Tab fx:id="logoutTab" onSelectionChanged="#logout" text="Logout" />
         </tabs>
       </TabPane>
       <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1200.0" text="Version 1.0.0 | PT Haga Teknologi Industri" textAlignment="CENTER" />
+      <Accordion>
+        <panes>
+          <TitledPane animated="false" text="untitled 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="untitled 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+          <TitledPane animated="false" text="untitled 3">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
    </children>
 </VBox>

@@ -8,14 +8,14 @@ public class Report {
     private SimpleStringProperty productName;
     private SimpleStringProperty soldDate;
     private SimpleIntegerProperty amount;
-    private SimpleIntegerProperty revenue;
+    private SimpleStringProperty revenue;
 
-    public Report(int number, String productName, String soldDate, int amount, int revenue) {
+    public Report(int number, String productName, String soldDate, int amount, String revenue) {
         this.number = new SimpleIntegerProperty(number);
         this.productName = new SimpleStringProperty(productName);
         this.soldDate = new SimpleStringProperty(soldDate);
         this.amount = new SimpleIntegerProperty(amount);
-        this.revenue = new SimpleIntegerProperty(revenue);
+        this.revenue = new SimpleStringProperty(revenue);
     }
 
     public int getNumber() {
@@ -66,15 +66,15 @@ public class Report {
         this.amount.set(amount);
     }
 
-    public int getRevenue() {
+    public String getRevenue() {
         return revenue.get();
     }
 
-    public SimpleIntegerProperty revenueProperty() {
+    public SimpleStringProperty revenueProperty() {
         return revenue;
     }
 
-    public void setRevenue(int revenue) {
+    public void setRevenue(String revenue) {
         this.revenue.set(revenue);
     }
 }

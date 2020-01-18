@@ -52,8 +52,8 @@ public class ProductDatabase {
             pstmt.setString(2, product.getName());
             pstmt.setDouble(3, product.getPrice());
             pstmt.setString(4, product.getMerk());
-            pstmt.setString(5, product.getSpec());
-            pstmt.setString(6, product.getSupplier());
+            pstmt.setString(5, product.getSupplier());
+            pstmt.setString(6, product.getSpec());
             pstmt.setInt(7, product.getStock());
             pstmt.setLong(8, System.currentTimeMillis() / 1000L);
 
@@ -78,7 +78,7 @@ public class ProductDatabase {
     public ResultSet getProductName() {
         ResultSet resultSet = null;
         try {
-            String query = "SELECT pid, merk FROM barang ORDER BY pid";
+            String query = "SELECT pid, nama, merk FROM barang ORDER BY pid";
             resultSet = stmt.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,15 +119,17 @@ public class ProductDatabase {
 
     public void addOutProduct(int productId, int amount, int price, long time) {
         int initialPrice = getPriceById(productId);
+        int margin = price - initialPrice;
 
         try {
-            String insertQuery = "INSERT INTO barang_keluar VALUES(null,?,?,?,?,?)";
+            String insertQuery = "INSERT INTO penjualan VALUES(null,?,?,?,?,?,?)";
             pstmt = (PreparedStatement) con.prepareStatement(insertQuery);
             pstmt.setInt(1, productId);
             pstmt.setInt(2, price);
-            pstmt.setInt(3, amount);
-            pstmt.setLong(4, time);
-            pstmt.setLong(5, initialPrice);
+            pstmt.setInt(3, initialPrice);
+            pstmt.setLong(4, amount);
+            pstmt.setLong(5, margin);
+            pstmt.setLong(6, time);
 
             pstmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Berhasil menambahkan data barang keluar");
@@ -300,13 +302,30 @@ public class ProductDatabase {
         ResultSet resultSet = null;
         try {
             stmt = con.createStatement();
-            String query = "SELECT * FROM barang_keluar where time between " + startTime + " and " + endTime + " order by id";
+            String query = "SELECT barang.nama, penjualan.time, penjualan.amount, penjualan.price, penjualan.initial_price FROM penjualan " +
+                    "INNER JOIN barang ON penjualan.pid=barang.pid where penjualan.time between " + startTime + " and " + endTime + " order by id";
             System.out.println(query);
             resultSet = stmt.executeQuery(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return resultSet;
+    }
+
+    public int getAvailableStock() {
+        String query = "SELECT stok FROM barang";
+        ResultSet rs = null;
+        int stock = 0;
+        try {
+            rs = stmt.executeQuery(query);
+            while (rs.next()){
+                int currentStock = rs.getInt("stok");
+                stock = stock + currentStock;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stock;
     }
 
 }
